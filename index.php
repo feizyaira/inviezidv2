@@ -6,7 +6,7 @@ $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 switch ($path) {
     case '':
     case '/':
-    case '/dashboard':
+    case 'dashboard':
         require __DIR__ . '/pages/dashboard/index.php';
         break;
     case 'login':
@@ -15,11 +15,20 @@ switch ($path) {
     case 'fb-login':
         require __DIR__ . '/pages/login/facebook-login.php';
         break;
+    case 'google-login':
+        require __DIR__ . '/pages/login/google-login.php';
+        break;
     case 'fbcallback':
         require __DIR__ . '/config/callback/facebook-callback.php';
         break;
+    case 'gcallback':
+        require __DIR__ . '/config/callback/google-callback.php';
+        break;
     case 'signup-from-facebook':
         require __DIR__ . '/pages/signup-from-facebook/index.php';
+        break;
+    case 'signup-from-google':
+        require __DIR__ . '/pages/signup-from-google/index.php';
         break;
     // Default
     default:
