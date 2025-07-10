@@ -2,9 +2,10 @@
 require_once __DIR__ . '/config.php';
 
 try {
-    $existUser = $pdo->prepare("SELECT * FROM sellers WHERE seller_email = :seller_email");
+    $existUser = $pdo->prepare("SELECT COUNT(*) FROM sellers WHERE seller_email = :seller_email");
     $existUser->execute([':seller_email' => $sellerEmail]);
-    $checkUser = $existUser->fetchColumn();
+    $seller = $existUser->fetch();
+    $checkUser = $existUser->fetchColumn() < 1;
 } catch (Exception $e) {
     die("Something went wrong. " . $e->getMessage());
 }
