@@ -71,6 +71,9 @@ if (isset($_GET['code'])) {
         require_once __DIR__ . '/../database/registered-user.php';
 
         if ($checkUser) {
+            $_SESSION['fb_id'] = $fb_id;
+            $_SESSION['fb_name'] = $fb_name;
+            $_SESSION['fb_email'] = $fb_email;
             header('Location: /signup-from-facebook');
             exit;
         } else {
