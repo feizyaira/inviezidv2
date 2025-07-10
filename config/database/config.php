@@ -2,7 +2,7 @@
 
 $host = 'localhost';
 $db = 'inviez';
-$user = 'feira';
+$user = 'root';
 $pass = '237768';
 
 try {
