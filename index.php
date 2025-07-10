@@ -12,6 +12,15 @@ switch ($path) {
     case 'login':
         require __DIR__ . '/pages/login/index.php';
         break;
+    case 'fb-login':
+        require __DIR__ . '/pages/login/facebook-login.php';
+        break;
+    case 'fbcallback':
+        require __DIR__ . '/config/callback/facebook-callback.php';
+        break;
+    case 'signup-from-facebook':
+        require __DIR__ . '/pages/signup-from-facebook/index.php';
+        break;
     // Default
     default:
         http_response_code(404);
