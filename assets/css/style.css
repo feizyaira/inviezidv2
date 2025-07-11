@@ -356,12 +356,8 @@ body.dark .login {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    max-width: 1024px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 16px;
+    min-height: 100%;
+    position: relative;
     overflow: hidden;
 }
 body.light .login .content {
@@ -435,16 +431,17 @@ body.dark .login .content {
 }
 .login .section.log-form {
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     gap: var(--padding);
-    padding: calc(var(--padding) * 2) var(--padding);
+    padding: var(--padding);
 }
 .login .form {
-    margin-top: var(--padding);
-    width: 60%;
-    margin: 0 auto;
+    width: 100%;
+    width: 50%;
+    margin: 15px auto 0;
 }
 .login .form-title {
+    width: 100%;
     text-align: center;
     padding-bottom: var(--padding);
 }

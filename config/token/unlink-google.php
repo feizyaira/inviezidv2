@@ -56,7 +56,7 @@ if ($access_token) {
         ]
     ]));
 }
-if (isset($POST['unlinkGoogle']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['unlinkGoogle']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/csrf_validate.php';
     // Step 4: Update database - hapus GID dan refresh token
     $update = $pdo->prepare("UPDATE sellers SET seller_gid = NULL, google_refresh_token = NULL WHERE seller_gid = ?");
