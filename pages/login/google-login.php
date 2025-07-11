@@ -7,7 +7,8 @@ $google_client_id = $env['GOOGLE_CLIENT_ID'] ?? getenv('GOOGLE_CLIENT_ID');
 $redirect_uri = $env['GOOGLE_REDIRECT_URI'] ?? getenv('GOOGLE_REDIRECT_URI');
 
 // 1. Generate state token & simpan ke session
-$state = bin2hex(random_bytes(16));
+require_once __DIR__ . '/../../config/token/csrf_token.php';
+$state = $csrf_token;
 $_SESSION['google_state'] = $state;
 
 // 2. Bangun URL redirect ke Google

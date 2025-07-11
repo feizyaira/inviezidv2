@@ -12,6 +12,8 @@ if (isset($_GET['code'])) {
     if (!isset($_GET['state']) || !hash_equals($_SESSION['fb_state'] ?? '', $_GET['state'])) {
         die('Invalid state parameter');
     }
+
+    unset($_SESSION['fb_state']);
     
     // Validate authorization code
     if (empty($_GET['code']) || !is_string($_GET['code'])) {
@@ -55,37 +57,40 @@ if (isset($_GET['code'])) {
             die('Invalid user data received from Facebook');
         }
 
-        $fb_id = $user['id'];
-        $fb_name = $user['name'];
-        $fb_email = $user['email'] ?? '';
+        $fb_id = trim($user['id']);
+        $fb_name = trim($user['name']);
+        // $fb_email = $user['email'] ?? '';
 
-        $sellerEmail = $fb_email;
+        // $sellerEmail = $fb_email;
 
         require_once __DIR__ . '/../database/config.php';
         require_once __DIR__ . '/../token/csrf_token.php';
 
-        $checkUser = $pdo->prepare("SELECT seller_fb_id FROM sellers WHERE seller_fb_id = ?");
-        $checkUser->execute([$fb_id]);
-        $existUser = $checkUser->fetchColumn() > 0;
+        if (empty($fb_id) || empty($fb_name)) {
+            error_log('Failed to retrieve data from Facebook - ' . json_encode($data));
+            die("No data received");
+        }
+        
+        if (!empty($fb_id) && !empty($fb_name)){
+            $checkUser = $pdo->prepare("SELECT seller_fb_id FROM sellers WHERE seller_fb_id = ?");
+            $checkUser->execute([$fb_id]);
 
-        if ($existUser) {
-            $_SESSION['logged'] = $fb_id;
-            $_SESSION['new_from_fb'] = true;
-            unset($_SESSION['fb_state']);
-            
-            header('Location: /dashboard');
-            exit;
-        } else {
-            $insertData = $pdo->prepare("INSERT INTO sellers (seller_fb_id, seller_name, seller_email) VALUES (?, ?, ?)");
-            $insertData->execute([$fb_id, $fb_name, $fb_email]);
+            if ($checkUser->fetchColumn() > 0) {
+                $_SESSION['logged'] = $fb_id;
 
-            $_SESSION['logged'] = $fb_id;
-            $_SESSION['new_from_fb'] = true;
-            unset($_SESSION['fb_state']);
-            
-            header('Location: /dashboard');
-            exit;
-        }        
+                header('Location: /dashboard');
+                exit;
+            } else {
+                $insertData = $pdo->prepare("INSERT INTO sellers (seller_fb_id, seller_name) VALUES (?, ?)");
+                $insertData->execute([$fb_id, $fb_name]);
+
+                $_SESSION['logged'] = $fb_id;
+                
+                header('Location: /dashboard');
+                exit;
+            }
+        }
+   
     } else {
         error_log('Facebook OAuth: Failed to obtain access token - ' . json_encode($data));
         die('Authentication failed. Please try again.');
