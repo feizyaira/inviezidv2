@@ -9,6 +9,9 @@ switch ($path) {
     case 'dashboard':
         require __DIR__ . '/pages/dashboard/index.php';
         break;
+    case 'logout':
+        require __DIR__ . '/config/auth/logout.php';
+        break;
     case 'login':
         require __DIR__ . '/pages/login/index.php';
         break;

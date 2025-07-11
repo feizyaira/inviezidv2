@@ -1,22 +1,5 @@
 <?php
 
-//$env = parse_ini_file(__DIR__ . '/../../.env');
-//
-//$fb_app_id = $env['FB_APP_ID'] ?? getenv('FB_APP_ID');
-//$redirect_uri = $env['FB_REDIRECT_URI'] ?? getenv('FB_REDIRECT_URI');
-//
-//$scope = 'public_profile,email';
-//
-//$login_url = "https://www.facebook.com/v18.0/dialog/oauth?" . http_build_query([
-//    'client_id' => $fb_app_id,
-//    'redirect_uri' => $redirect_uri,
-//    'scope' => $scope,
-//    'response_type' => 'code',
-//]);
-//
-//header("Location: $login_url");
-//exit;
-
 session_start();
 
 $env = parse_ini_file(__DIR__ . '/../../.env');
@@ -25,7 +8,8 @@ $fb_app_id = $env['FB_APP_ID'] ?? getenv('FB_APP_ID');
 $redirect_uri = $env['FB_REDIRECT_URI'] ?? getenv('FB_REDIRECT_URI');
 
 // 1. Generate state token dan simpan ke session
-$state = bin2hex(random_bytes(16));
+require_once __DIR__ . '/../../config/token/csrf_token.php';
+$state = $csrf_token;
 $_SESSION['fb_state'] = $state;
 
 // 2. Redirect user ke Facebook login dengan state

@@ -55,32 +55,37 @@ if (isset($_GET['code'])) {
             die('Invalid user data received from Facebook');
         }
 
-        $fb_id = $user['id'] ?? '';
-        $fb_name = $user['name'] ?? '';
+        $fb_id = $user['id'];
+        $fb_name = $user['name'];
         $fb_email = $user['email'] ?? '';
 
-        if (!$fb_email) {
-            $_SESSION['fb_id'] = $fb_id;
-            $_SESSION['fb_name'] = $fb_name;
-
-            header('Location: /signup-from-facebook');
-            exit;
-        }
-
         $sellerEmail = $fb_email;
-        require_once __DIR__ . '/../database/registered-user.php';
 
-        if ($checkUser) {
-            $_SESSION['fb_id'] = $fb_id;
-            $_SESSION['fb_name'] = $fb_name;
-            $_SESSION['fb_email'] = $fb_email;
-            header('Location: /signup-from-facebook');
-            exit;
-        } else {
+        require_once __DIR__ . '/../database/config.php';
+        require_once __DIR__ . '/../token/csrf_token.php';
+
+        $checkUser = $pdo->prepare("SELECT seller_fb_id FROM sellers WHERE seller_fb_id = ?");
+        $checkUser->execute([$fb_id]);
+        $existUser = $checkUser->fetchColumn() > 0;
+
+        if ($existUser) {
+            $_SESSION['logged'] = $fb_id;
+            $_SESSION['new_from_fb'] = true;
+            unset($_SESSION['fb_state']);
+            
             header('Location: /dashboard');
             exit;
-        }
-        
+        } else {
+            $insertData = $pdo->prepare("INSERT INTO sellers (seller_fb_id, seller_name, seller_email) VALUES (?, ?, ?)");
+            $insertData->execute([$fb_id, $fb_name, $fb_email]);
+
+            $_SESSION['logged'] = $fb_id;
+            $_SESSION['new_from_fb'] = true;
+            unset($_SESSION['fb_state']);
+            
+            header('Location: /dashboard');
+            exit;
+        }        
     } else {
         error_log('Facebook OAuth: Failed to obtain access token - ' . json_encode($data));
         die('Authentication failed. Please try again.');
