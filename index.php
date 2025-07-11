@@ -27,12 +27,8 @@ switch ($path) {
     case 'gcallback':
         require __DIR__ . '/config/callback/google-callback.php';
         break;
-    case 'signup-from-facebook':
-        require __DIR__ . '/pages/signup-from-facebook/index.php';
-        break;
-    case 'signup-from-google':
-        require __DIR__ . '/pages/signup-from-google/index.php';
-        break;
+    case 'settings':
+        
     // Default
     default:
         http_response_code(404);
