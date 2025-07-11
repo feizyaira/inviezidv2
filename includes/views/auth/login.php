@@ -98,7 +98,7 @@ if (isset($_POST['login']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="input-group">
                     <label class="label plain" for="inputEmail">
                         <span class="icon">mail</span>
-                        <input type="text" id="inputEmail" class="input" name="seller_email" placeholder="Alamat Email" required/>
+                        <input type="email" id="inputEmail" class="input" name="seller_email" placeholder="Alamat Email" required/>
                     </label>
                     <div class="error-text" id="error-inputEmail"></div>
                 </div>

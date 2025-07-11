@@ -8,8 +8,7 @@ $fb_app_id = $env['FB_APP_ID'] ?? getenv('FB_APP_ID');
 $redirect_uri = $env['FB_REDIRECT_URI'] ?? getenv('FB_REDIRECT_URI');
 
 // 1. Generate state token dan simpan ke session
-require_once __DIR__ . '/../../config/token/csrf_token.php';
-$state = $csrf_token;
+$state = bin2hex(random_bytes(16));
 $_SESSION['fb_state'] = $state;
 
 // 2. Redirect user ke Facebook login dengan state

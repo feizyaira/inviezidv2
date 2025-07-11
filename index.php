@@ -27,8 +27,15 @@ switch ($path) {
     case 'gcallback':
         require __DIR__ . '/config/callback/google-callback.php';
         break;
+    case 'register':
+        require __DIR__ . '/pages/register/index.php';
+        break;
+    case 'verify':
+        require __DIR__ . '/pages/register/verify.php';
+        break;
     case 'settings':
-        
+        require __DIR__ . '/pages/settings/index.php';
+        break;
     // Default
     default:
         http_response_code(404);

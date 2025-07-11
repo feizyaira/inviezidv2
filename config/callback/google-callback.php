@@ -59,8 +59,13 @@ $g_email = trim($gaccount['email']);
 require_once __DIR__ . '/../database/config.php';
 require_once __DIR__ . '/../token/csrf_token.php';
 
+// Check if user exists first
+$checkUser = $pdo->prepare("SELECT seller_email FROM sellers WHERE seller_email = ?");
+$checkUser->execute([$g_email]);
+$userExists = $checkUser->fetchColumn() > 0;
+
 $refresh_token = $data['refresh_token'] ?? null;
-if ($refresh_token) {
+if ($refresh_token && $userExists) {
     // Simpan ke DB
     $save = $pdo->prepare("UPDATE sellers SET google_refresh_token = ? WHERE seller_gid = ?");
     $save->execute([$refresh_token, $g_id]);

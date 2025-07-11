@@ -59,9 +59,9 @@ if (isset($_GET['code'])) {
 
         $fb_id = trim($user['id']);
         $fb_name = trim($user['name']);
-        // $fb_email = $user['email'] ?? '';
+        // $fb_email = $user['email'] ?? ''; Temporary Commented. Because to avoiding conflict with user who register with Email
 
-        // $sellerEmail = $fb_email;
+        // $sellerEmail = $fb_email; Temporary Commented. Because to avoiding conflict with user who register with Email
 
         require_once __DIR__ . '/../database/config.php';
         require_once __DIR__ . '/../token/csrf_token.php';
