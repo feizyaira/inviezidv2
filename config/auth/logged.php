@@ -5,6 +5,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION['logged'])) {
-    header('Location: /home');
+    header('Location: /dashboard');
     exit;
 }
